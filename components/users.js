@@ -647,12 +647,19 @@ SteamCommunity.prototype.getUserInventoryContents = function(userID, appID, cont
 				return;
 			}
 
+            const assetsProperties = body.asset_properties || [];
+
 			for (var i = 0; i < body.assets.length; i++) {
-				var description = getDescription(body.descriptions, body.assets[i].classid, body.assets[i].instanceid);
+                const asset = body.assets[i];
+
+				const description = getDescription(body.descriptions, asset.classid, asset.instanceid);
+
+                const assetPropertiesEntry = assetsProperties.find(p => p.assetid === asset.assetid);
+                const assetProperties = assetPropertiesEntry ? assetPropertiesEntry.asset_properties : null;
 
 				if (!tradableOnly || (description && description.tradable)) {
-					body.assets[i].pos = pos++;
-					(body.assets[i].currencyid ? currency : inventory).push(new CEconItem(body.assets[i], description, contextID));
+					asset.pos = pos++;
+					(asset.currencyid ? currency : inventory).push(new CEconItem(asset, description, contextID, assetProperties));
 				}
 			}
 

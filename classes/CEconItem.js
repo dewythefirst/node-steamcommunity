@@ -1,6 +1,6 @@
 module.exports = CEconItem;
 
-function CEconItem(item, description, contextID) {
+function CEconItem(item, description, contextID, assetProperties) {
 	var thing;
 	for (thing in item) {
 		if (item.hasOwnProperty(thing)) {
@@ -33,6 +33,10 @@ function CEconItem(item, description, contextID) {
 			}
 		}
 	}
+
+    if (assetProperties) {
+        this.asset_properties = assetProperties;
+    }
 
 	this.is_currency = isCurrency;
 	this.tradable = !!this.tradable;
